@@ -3,7 +3,7 @@ require "bundler/setup"
 require "shellwords"
 
 def altool_path
-  return "/Applications/Xcode.app/Contents/Applications/Application\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool"
+  return "/Applications/Xcode.app/Contents/Applications/Application\\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool"
 end
 
 namespace :build do
