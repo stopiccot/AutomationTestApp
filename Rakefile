@@ -15,8 +15,12 @@ namespace :build do
     command = "rm -rf Builds"
     puts command
     `#{command}`
-    
+
     command = "/Applications/Unity/Unity.app/Contents/MacOS/Unity -quit -batchmode -executeMethod AutoBuilder.PerformiOSBuild"
+    puts command
+    `#{command}`
+
+    command = "cd Builds/iOS && xcodebuild archive -scheme \"Unity-iPhone\" -archivePath arc.xcarchive"
     puts command
     `#{command}`
   end
