@@ -2,6 +2,10 @@ require "rubygems"
 require "bundler/setup"
 require "shellwords"
 
+def altool_path
+  return "/Applications/Xcode.app/Contents/Applications/Application\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool"
+end
+
 namespace :build do
   desc "Codegen proper-api files"
   task :proper_api do
@@ -19,8 +23,20 @@ namespace :build do
     command = "/Applications/Unity/Unity.app/Contents/MacOS/Unity -quit -batchmode -executeMethod AutoBuilder.PerformiOSBuild"
     puts command
     `#{command}`
+  end
 
+  task :build_ipa do
     command = "cd Builds/iOS && xcodebuild archive -scheme \"Unity-iPhone\" -archivePath arc.xcarchive"
+    puts command
+    `#{command}`
+
+    command = "cd Builds/iOS && xcodebuild -exportArchive -archivePath arc.xcarchive -exportPath app -exportFormat ipa -exportProvisioningProfile \"AutomationTestApp - Prod\""
+    puts command
+    `#{command}`
+  end
+
+  task :upload do
+    command = "cd Builds/iOS && #{altool_path} --upload-app --file app.ipa -u alexey.petruchik@gmail.com -p \"@keychain:Application Loader: alexey.petruchik@gmail.com\""
     puts command
     `#{command}`
   end
