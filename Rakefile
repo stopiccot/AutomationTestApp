@@ -12,6 +12,10 @@ namespace :build do
 
   desc "Build iOS project"
   task :build_ios do
+    command = "rm -rf Builds"
+    puts command
+    `#{command}`
+    
     command = "/Applications/Unity/Unity.app/Contents/MacOS/Unity -quit -batchmode -executeMethod AutoBuilder.PerformiOSBuild"
     puts command
     `#{command}`

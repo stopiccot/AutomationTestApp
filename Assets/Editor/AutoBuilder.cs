@@ -11,7 +11,7 @@ public static class AutoBuilder {
     {
         EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.iOS);
         BuildPipeline.BuildPlayer(new EditorBuildSettingsScene[] { 
-            new EditorBuildSettingsScene("Assets/Jigsaw/Scenes/Game.unity", true),
+            new EditorBuildSettingsScene("Assets/Game.unity", true),
         }, "Builds/iOS", BuildTarget.iOS, BuildOptions.None);
     }
 
@@ -20,7 +20,7 @@ public static class AutoBuilder {
     {
 		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.Android);
         BuildPipeline.BuildPlayer(new EditorBuildSettingsScene[] { 
-            new EditorBuildSettingsScene("Assets/Jigsaw/Scenes/Game.unity", true),
+            new EditorBuildSettingsScene("Assets/Game.unity", true),
 		}, "Builds/Android", BuildTarget.Android, BuildOptions.None);
     }
 }
