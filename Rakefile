@@ -1,9 +1,25 @@
 require "rubygems"
 require "bundler/setup"
 require "shellwords"
+require "keychain"
 
 def altool_path
   return "/Applications/Xcode.app/Contents/Applications/Application\\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool"
+end
+
+def appleid_for_upload
+  found_secret = Keychain.generic_passwords.where(:service => 'altool_password').first
+  if found_secret != nil
+    return found_secret.account
+  end
+
+  STDOUT.puts "We need AppleID to upload build"
+  STDOUT.print "account:"
+  account = STDIN.gets.strip
+  STDOUT.print "password:"
+  password = STDIN.gets.strip
+  Keychain.generic_passwords.create(:service => 'altool_password', :password => password, :account => account)
+  return account
 end
 
 namespace :build do
@@ -36,7 +52,7 @@ namespace :build do
   end
 
   task :upload do
-    command = "cd Builds/iOS && #{altool_path} --upload-app --file app.ipa -u alexey.petruchik@gmail.com -p \"@keychain:Application Loader: alexey.petruchik@gmail.com\""
+    command = "cd Builds/iOS && #{altool_path} --upload-app --file app.ipa -u #{appleid_for_upload} -p \"@keychain:altool_password\""
     puts command
     `#{command}`
   end
