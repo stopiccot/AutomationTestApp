@@ -1,6 +1,7 @@
 require "rubygems"
 require "bundler/setup"
 require "shellwords"
+require "io/console"
 require "keychain"
 
 def altool_path
@@ -14,10 +15,13 @@ def appleid_for_upload
   end
 
   STDOUT.puts "We need AppleID to upload build"
+  
   STDOUT.print "account:"
   account = STDIN.gets.strip
+  
   STDOUT.print "password:"
-  password = STDIN.gets.strip
+  password = STDIN.noecho(&:gets).strip
+
   Keychain.generic_passwords.create(:service => 'altool_password', :password => password, :account => account)
   return account
 end
