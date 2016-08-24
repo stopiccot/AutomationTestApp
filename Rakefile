@@ -3,9 +3,10 @@ require "bundler/setup"
 require "shellwords"
 require "io/console"
 require "keychain"
+require "shellwords"
 
 def altool_path
-  return "/Applications/Xcode.app/Contents/Applications/Application\\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool"
+  return "/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool"
 end
 
 def appleid_for_upload
@@ -58,7 +59,7 @@ namespace :build do
   task :upload_ipa_to_appstore do
     account = appleid_for_upload
     puts "Using #{account} for uploading ipa"
-    command = "#{altool_path} --upload-app --file Builds/iOS/app.ipa -u #{account} -p \"@keychain:altool_password\""
+    command = "#{Shellwords.escape(altool_path)} --upload-app --file Builds/iOS/app.ipa -u #{account} -p \"@keychain:altool_password\""
     puts command
     `#{command}`
   end
