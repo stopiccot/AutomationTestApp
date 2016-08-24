@@ -55,8 +55,10 @@ namespace :build do
     `#{command}`
   end
 
-  task :upload do
-    command = "cd Builds/iOS && #{altool_path} --upload-app --file app.ipa -u #{appleid_for_upload} -p \"@keychain:altool_password\""
+  task :upload_ipa_to_appstore do
+    account = appleid_for_upload
+    puts "Using #{account} for uploading ipa"
+    command = "#{altool_path} --upload-app --file Builds/iOS/app.ipa -u #{account} -p \"@keychain:altool_password\""
     puts command
     `#{command}`
   end
