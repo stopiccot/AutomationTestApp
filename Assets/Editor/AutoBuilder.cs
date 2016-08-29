@@ -9,11 +9,22 @@ public static class AutoBuilder {
     [MenuItem("File/AutoBuilder/iOS")]
     static void PerformiOSBuild()
     {
+		PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
         EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.iOS);
         BuildPipeline.BuildPlayer(new EditorBuildSettingsScene[] { 
             new EditorBuildSettingsScene("Assets/Game.unity", true),
         }, "Builds/iOS", BuildTarget.iOS, BuildOptions.None);
     }
+
+	[MenuItem("File/AutoBuilder/iOSSimulator")]
+	static void PerformiOSBuildSimulator()
+	{
+		PlayerSettings.iOS.sdkVersion = iOSSdkVersion.SimulatorSDK;
+		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.iOS);
+		BuildPipeline.BuildPlayer(new EditorBuildSettingsScene[] {
+			new EditorBuildSettingsScene("Assets/Game.unity", true),
+		}, "Builds/iOS", BuildTarget.iOS, BuildOptions.None);
+	}
 
     [MenuItem("File/AutoBuilder/Android")]
     static void PerformAndroidBuild()
