@@ -5,7 +5,7 @@ require 'calabash-cucumber/calabash_steps'
 
 calabash_launcher = Calabash::Cucumber::Launcher.new
 
-app_path = "/Users/stopiccot/Library/Developer/Xcode/DerivedData/Unity-iPhone-cnrfuklrxqjyslcvogrvqymmfjlx/Build/Products/Release-iphonesimulator/AutomationTestApp.app"
+app_path = "./Builds/iOS/build/Release-iphonesimulator/AutomationTestApp.app"
 
 options = {
   app: app_path,
