@@ -20,6 +20,7 @@ public static class AutoBuilder {
 	static void PerformiOSBuildSimulator()
 	{
 		PlayerSettings.iOS.sdkVersion = iOSSdkVersion.SimulatorSDK;
+		PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS, "CALABASH_UNITY");
 		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.iOS);
 		BuildPipeline.BuildPlayer(new EditorBuildSettingsScene[] {
 			new EditorBuildSettingsScene("Assets/Game.unity", true),

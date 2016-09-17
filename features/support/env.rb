@@ -9,10 +9,9 @@ app_path = "./Builds/iOS/build/Release-iphonesimulator/AutomationTestApp.app"
 
 options = {
   app: app_path,
-  # uia_strategy: :preferences,
-  # launch_method: :instruments,
-  device_target: "iPhone 6 (9.3)",
-  device: "iPhone 6 (9.3)"
+  device_target: "iPhone 6 (10.0)",
+  device: "iPhone 6 (10.0)",
+  # calabash_lite: true
 }
 
 # xcrun simctl launch booted com.one1eleven.AutomationTestApp
