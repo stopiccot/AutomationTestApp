@@ -352,7 +352,7 @@ PlayerSettings:
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
   scriptingDefineSymbols:
-    4: 
+    4: CALABASH_UNITY
   metroPackageName: AutomationTestApp
   metroPackageVersion: 
   metroCertificatePath: 
