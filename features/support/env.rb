@@ -11,7 +11,6 @@ options = {
   app: app_path,
   device_target: "iPhone 6 (10.0)",
   device: "iPhone 6 (10.0)",
-  # calabash_lite: true
 }
 
 # xcrun simctl launch booted com.one1eleven.AutomationTestApp
