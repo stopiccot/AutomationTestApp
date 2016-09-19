@@ -52,18 +52,9 @@ public class UnityScheduler : MonoBehaviour
 		SynchronizationContext.SetSynchronizationContext(UpdateScheduler.Context);
 	}
 
-	private void Update() {
-//		FileLog.Instance.Log("UnityScheduler.Update()");
-		UpdateScheduler.Activate();
-	}
+	private void Update() => UpdateScheduler.Activate();
 
-	private void LateUpdate() {
-//		FileLog.Instance.Log("UnityScheduler.LateUpdate()");
-		LateUpdateScheduler.Activate();
-	}
+	private void LateUpdate() => LateUpdateScheduler.Activate();
 
-	private void FixedUpdate() {
-//		FileLog.Instance.Log("UnityScheduler.FixedUpdate()");
-		FixedUpdateScheduler.Activate();
-	}
+	private void FixedUpdate() => FixedUpdateScheduler.Activate();
 }

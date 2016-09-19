@@ -14,7 +14,7 @@ namespace Calabash
 	public class MapRequestResponse {
 		public string outcome;
 		public string reason;
-		public CalabashMatchedObject[] results;
+		public List<CalabashMatchedObject> results;
 	}
 
 	public class MapRoute : Route {
@@ -89,7 +89,12 @@ namespace Calabash
 			var task = Task.Factory.StartNew<List<CalabashMatchedObject>>(() => {
 				try {
 					return CalabashCanvas.Instance.Query(queryString);
-				} catch (Exception e) {
+				} 
+				catch (CalabashException e) {
+					failureReason = e.Message;
+					return null;
+				}
+				catch (Exception e) {
 					FileLog.Log("EXCEPTION: " + e.ToString());
 					failureReason = "Horrible exception during CalabashCanvas.Instance.Query";
 					return null;
@@ -106,14 +111,14 @@ namespace Calabash
 
 			var responseObject = new MapRequestResponse {
 				outcome = "SUCCESS",
-				results = new CalabashMatchedObject[] {}
+				results = new List<CalabashMatchedObject>()
 			};
 
 			if (matchedObjects != null) {
-				responseObject.results = matchedObjects.ToArray();
+				responseObject.results = matchedObjects;
 			} else {
 				responseObject.outcome = "FAILURE";
-				responseObject.reason = failureReason != null ? failureReason : "NO FUCKING REASON";
+				responseObject.reason = !String.IsNullOrEmpty(failureReason) ? failureReason : "Unknown reason";
 			}
 
 			return JsonUtility.ToJson(responseObject);

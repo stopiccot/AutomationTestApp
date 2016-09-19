@@ -60,29 +60,24 @@ public class CalabashCanvas : MonoBehaviour {
 	}
 
 	public List<CalabashMatchedObject> Query(string queryString) {
-		FileLog.Log("0 - CalabashCanvas.Query(\"" + queryString + "\")");
-
 		List<CalabashMatchedObject> results = new List<CalabashMatchedObject>();
 
 		Regex regex = new Regex("(.*?) (.*?) ?'(.*?)'");
 
-		FileLog.Log("1 - CalabashCanvas.Query(\"" + queryString + "\")");
-
 		Match match = regex.Match(queryString);
 
-		if (match.Success) {
-			FileLog.Log("PARSED QUERY: \"" + queryString + "\"");
-			FileLog.Log(match.Groups[1].Value);
-			FileLog.Log(match.Groups[2].Value);
-			FileLog.Log(match.Groups[3].Value);
-		} else {
-			FileLog.Log("FAILED TO PARSE QUERY: \"" + queryString + "\"");
-			throw new Exception();
+		if (!match.Success) {
+			throw new CalabashException("Failed to parse query \"" + queryString + "\"");
 		}
 
 		var viewType = match.Groups[1].Value;
 		var queryVerb = match.Groups[2].Value;
 		var queryParameter = match.Groups[3].Value;
+
+		FileLog.Log("PARSED QUERY: \"" + queryString + "\"");
+		FileLog.Log(viewType);
+		FileLog.Log(queryVerb);
+		FileLog.Log(queryParameter);
 
 		if (viewType == "view") {
 			FileLog.Log("CHECKING VIEWS");
