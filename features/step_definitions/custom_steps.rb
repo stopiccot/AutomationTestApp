@@ -1,3 +1,3 @@
 When(/^I start the app$/) do
-  p "HUITA"
+  backdoor "setBaseURL:", "http://google.com"
 end

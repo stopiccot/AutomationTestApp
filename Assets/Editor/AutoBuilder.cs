@@ -13,7 +13,7 @@ public static class AutoBuilder {
         EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.iOS);
         BuildPipeline.BuildPlayer(new EditorBuildSettingsScene[] { 
             new EditorBuildSettingsScene("Assets/Game.unity", true),
-        }, "Builds/iOS", BuildTarget.iOS, BuildOptions.None);
+		}, "Builds/iOS", BuildTarget.iOS, BuildOptions.SymlinkLibraries);
     }
 
 	[MenuItem("File/AutoBuilder/iOSSimulator")]
@@ -24,7 +24,7 @@ public static class AutoBuilder {
 		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.iOS);
 		BuildPipeline.BuildPlayer(new EditorBuildSettingsScene[] {
 			new EditorBuildSettingsScene("Assets/Game.unity", true),
-		}, "Builds/iOS", BuildTarget.iOS, BuildOptions.None);
+		}, "Builds/iOS", BuildTarget.iOS, BuildOptions.SymlinkLibraries);
 	}
 
     [MenuItem("File/AutoBuilder/Android")]
