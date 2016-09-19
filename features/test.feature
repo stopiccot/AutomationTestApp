@@ -20,13 +20,13 @@ Feature: Test feature
     Then I should not see "HUITA EBALA"
     And I should see a "Button1" button
     And I should not see a "Button2" button
-    And I should see "NEW TEXT" button
+    And I should see a "NEW TEXT" button
     And I should not see a "Button3" button
 
     When I touch "Button1"
 
-    Then I should see "Button3" button
+    Then I should see a "Button3" button
 
     When I touch "Button3"
-    
+
     Then I should see "HUITA EBALA"
