@@ -4,19 +4,20 @@ using UnityEngine.UI;
 
 public class SampleUIController : MonoBehaviour {
 
+	private static SampleUIController instance = null;
+
 	public Text huitaEbalaText;
 	public Button button1;
 	public Button button2;
 	public Button button3;
 
-	// Use this for initialization
-	void Start () {
-	
+	void Awake() {
+		instance = this;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	[Calabash.Backdoor("EnableCanvasScaling")]
+	public static void EnableCanvasScaling() {
+		instance.GetComponent<CanvasScaler>().enabled = true;
 	}
 
 	public void Button1ClickHandler() {
