@@ -20,6 +20,12 @@ public class SampleUIController : MonoBehaviour {
 		instance.GetComponent<CanvasScaler>().enabled = true;
 	}
 
+	[Calabash.Backdoor("EnableCanvasCamera")]
+	public static void EnableCanvasCamera() {
+		instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+		instance.GetComponent<Canvas>().worldCamera = Camera.main;
+	}
+
 	public void Button1ClickHandler() {
 		if (!button2.isActiveAndEnabled) {
 			button2.gameObject.SetActive(true);

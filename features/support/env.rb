@@ -19,3 +19,7 @@ options = {
 ENV["APP_BUNDLE_PATH"] = app_path
 
 calabash_launcher.relaunch(options)
+
+Before do |scenario|
+  calabash_launcher.relaunch(options)
+end
