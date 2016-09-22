@@ -14,7 +14,7 @@ public class SampleUIController : MonoBehaviour {
 	void Awake() {
 		instance = this;
 
-		button1.GetComponentInChildren<Text>().text = DeviceDisplay.statusBarHeightInPixels.ToString();
+		button1.GetComponentInChildren<Text>().text = Calabash.DeviceInfo.statusBarHeightInPixels.ToString();
 	}
 
 	[Calabash.Backdoor("EnableCanvasScaling")]
