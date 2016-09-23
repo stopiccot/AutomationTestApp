@@ -13,8 +13,6 @@ public class SampleUIController : MonoBehaviour {
 
 	void Awake() {
 		instance = this;
-
-		button1.GetComponentInChildren<Text>().text = Calabash.iOS.Device.generation.ToString();
 	}
 
 	[Calabash.Backdoor("EnableCanvasScaling")]
