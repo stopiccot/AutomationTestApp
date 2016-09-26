@@ -3,6 +3,7 @@ Feature: Test feature
     When I start the app
 
   Scenario: Test scenario
+    And device is in landscape mode
     And I should not see "HUITA EBALA"
     And I should see a "Button1" button
     And I should not see a "Button2" button
