@@ -9,8 +9,8 @@ app_path = "./Builds/iOS/build/Release-iphonesimulator/AutomationTestApp.app"
 
 options = {
   app: app_path,
-  device_target: "iPhone 6 (10.0)",
-  device: "iPhone 6 (10.0)",
+  device_target: "iPad Air (10.0)",
+  device: "iPad Air (10.0)",
 }
 
 # xcrun simctl launch booted com.one1eleven.AutomationTestApp

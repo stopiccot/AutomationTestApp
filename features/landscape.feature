@@ -1,8 +1,8 @@
-Feature: Test feature
+Feature: Test feature (landscape)
   Background:
     When I start the app
 
-  Scenario: Test scenario
+  Scenario: Test scenario (landscape)
     And device is in landscape mode
     And I should not see "HUITA EBALA"
     And I should see a "Button1" button
@@ -32,7 +32,7 @@ Feature: Test feature
 
     Then I should see "HUITA EBALA"
 
-  Scenario: Test scenario with canvas scaling
+  Scenario: Test scenario with canvas scaling (landscape)
     And device is in landscape mode
     And canvas scaling is enabled
     And I should not see "HUITA EBALA"
@@ -63,7 +63,7 @@ Feature: Test feature
 
     Then I should see "HUITA EBALA"
 
-  Scenario: Test scenario with canvas attached to camera
+  Scenario: Test scenario with canvas attached to camera (landscape)
     And device is in landscape mode
     And canvas is attached to camera
     And I should not see "HUITA EBALA"
@@ -94,7 +94,7 @@ Feature: Test feature
 
     Then I should see "HUITA EBALA"
 
-  Scenario: Test scenario with canvas both scaled and attached to camera
+  Scenario: Test scenario with canvas both scaled and attached to camera (landscape)
     And device is in landscape mode
     And canvas scaling is enabled
     And canvas is attached to camera
