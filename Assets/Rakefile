@@ -1,0 +1,147 @@
+require "rubygems"
+require "bundler/setup"
+require "io/console"
+require "keychain"
+require "shellwords"
+require "colorize"
+
+def unity_path
+  "/Applications/Unity/Unity.app/Contents/MacOS/Unity"
+end
+
+def altool_path
+  "/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool"
+end
+
+def altool_keychain_item_name
+  "altool_password"
+end
+
+def appleid_for_upload
+  altool_keychain_item = Keychain.generic_passwords.where(:service => altool_keychain_item_name).first
+  if altool_keychain_item != nil
+    return altool_keychain_item.account
+  end
+
+  STDOUT.puts "We need AppleID to upload build to the AppStore".bold
+  
+  STDOUT.print "account:"
+  account = STDIN.gets.strip
+  
+  STDOUT.print "password:"
+  password = STDIN.noecho(&:gets).strip
+  STDOUT.print "\n"
+
+  Keychain.generic_passwords.create(:service => altool_keychain_item_name, :password => password, :account => account)
+  return account
+end
+
+namespace :build do
+  desc "Set build version"
+  task :build_version do
+    build_number = ENV["VERSION"]
+    project_settings_filename = "ProjectSettings/ProjectSettings.asset"
+
+    # We do not use actual yaml parsing to do not mess up with unity's formatting and order
+    lines = File.readlines(project_settings_filename)
+    
+    File.open(project_settings_filename, "w") do |f|
+      lines.each do |line|
+        if line.include?("iPhoneBuildNumber:")
+          f.write("  iPhoneBuildNumber: #{build_number}\n")
+        elsif line.include?("AndroidBundleVersionCode:")
+          f.write("  AndroidBundleVersionCode: #{build_number}\n")
+        else
+          f.write(line)
+        end
+      end
+    end
+  end
+  
+  desc "Export iOS project"
+  task :export_ios_project do
+    command = "rm -rf Builds/iOS"
+    puts command
+    `#{command}`
+
+    command = "#{Shellwords.escape(unity_path)} -quit -batchmode -executeMethod AutoBuilder.PerformiOSBuild"
+    puts command
+    `#{command}`
+
+    if $?.to_i != 0
+      puts "Failed to export iOS project".red
+      exit(0)
+    end
+  end
+
+  desc "Export Simulator iOS project"
+  task :export_simulator_ios_project do
+    command = "rm -rf Builds/iOS"
+    puts command
+    `#{command}`
+    
+    command = "#{Shellwords.escape(unity_path)} -quit -batchmode -executeMethod AutoBuilder.PerformiOSBuildSimulator"
+    puts command
+    `#{command}`
+
+    if $?.to_i != 0
+      puts "Failed to export iOS project".red
+      exit(0)
+    end
+  end
+
+  desc "Export Android project"
+  task :export_android_project do
+    command = "#{Shellwords.escape(unity_path)} -quit -batchmode -executeMethod AutoBuilder.PerformAndroidBuild"
+    puts command
+    `#{command}`
+  end
+
+  desc "Build ipa from exported iOS project"
+  task :build_ipa do
+    command = "cd Builds/iOS && xcodebuild archive -scheme \"Unity-iPhone\" -archivePath #{project_name}.xcarchive"
+    puts command
+    `#{command}`
+
+    command = "cd Builds/iOS && xcodebuild -exportArchive -archivePath #{project_name}.xcarchive -exportPath #{project_name} -exportFormat ipa -exportProvisioningProfile \"#{production_provisioning}\""
+    puts command
+    `#{command}`
+  end
+
+  desc "Build app from exported iOS project"
+  task :build_app do
+    command = "cd Builds/iOS && xcodebuild"
+    puts command
+    `#{command}`
+  end
+
+  desc "Upload ipa to AppStore"
+  task :upload_ipa_to_appstore do
+    account = appleid_for_upload
+    puts "Using #{account} account to upload ipa".bold
+
+    command = "#{Shellwords.escape(altool_path)} --upload-app --file Builds/iOS/#{project_name}.ipa -u #{account} -p \"@keychain:#{altool_keychain_item_name}\""
+    puts command
+    `#{command}`
+
+    if $?.to_i != 0
+      puts "Failed to upload ipa".red
+      exit(0)
+    end
+  end
+
+  desc "Cleans the whole repo to initial state"
+  task :full_clean do
+    command = "git submodule update --init"
+    puts command
+    `#{command}`
+
+    command = "cd Assets/TripleDotPlatform && git submodule update --init && git reset --hard && git clean -xdf"
+    puts command
+    `#{command}`
+
+    command = "git reset --hard && git clean -xdf"
+    puts command
+    `#{command}`
+  end
+end

@@ -9,4 +9,4 @@ def production_provisioning
   "AutomationTestApp - Prod"
 end 
 
-load "Assets/TripleDotPlatform/Rakefile"
+load "Assets/Rakefile"
