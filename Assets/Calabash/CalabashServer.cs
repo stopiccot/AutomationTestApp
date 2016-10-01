@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using System;
 using System.Collections.Generic;
 using Calabash;
-using System.Threading.Tasks;
 using System.Threading;
 
 [Serializable]
@@ -39,12 +38,48 @@ public class CalabashServer : MonoBehaviour {
 		#endif
 	}
 
+	private readonly LinkedList<Task> queue = new LinkedList<Task>();
+
 	public Task<T> ExecuteOnMainThread<T>(Func<T> action) {
-		return Task.Factory.StartNew<T>(action, CancellationToken.None, TaskCreationOptions.None, UnityScheduler.UpdateScheduler);
+		Task<T> t = new Task<T>(action);
+		lock (queue) {
+			queue.AddLast(t);
+		}
+		return t;
 	}
 
 	public Task ExecuteOnMainThread(Action action) {
-		return Task.Factory.StartNew(action, CancellationToken.None, TaskCreationOptions.None, UnityScheduler.UpdateScheduler);
+		Task t = new Task(action);
+		lock (queue) {
+			queue.AddLast(t);
+		}
+		return t;
+	}
+
+	public void Update() {
+		ExecutedPendingTasks();
+	}
+
+	private void ExecutedPendingTasks()
+	{
+		while (true)
+		{
+			Task task;
+			lock (queue)
+			{
+				if (queue.Count == 0)
+				{
+					break;
+				}
+				task = queue.First.Value;
+				queue.RemoveFirst();
+			}
+
+			if (task != null)
+			{
+				task.Do();
+			}
+		}
 	}
 
 	public Calabash.Rect GetUIRect(GameObject gameObject, UnityEngine.Canvas canvas) {
